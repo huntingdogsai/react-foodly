@@ -146,6 +146,7 @@ export function App(): React.JSX.Element {
           cart={cart}
           onBack={() => setScreen('home')}
           onCheckout={() => setScreen('checkout')}
+          onClear={() => setCart([])}
         />
       )}
 
@@ -254,7 +255,7 @@ function ProductRow({ product, favourite, onToggleFavourite, onAddToCart }: {
   );
 }
 
-function Cart({ cart, onBack, onCheckout }: { cart: CartItem[]; onBack: () => void; onCheckout: () => void }): React.JSX.Element {
+function Cart({ cart, onBack, onCheckout, onClear }: { cart: CartItem[]; onBack: () => void; onCheckout: () => void; onClear: () => void }): React.JSX.Element {
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   return (
     <main>
@@ -271,7 +272,10 @@ function Cart({ cart, onBack, onCheckout }: { cart: CartItem[]; onBack: () => vo
         ))
       )}
       <div className="row total"><span className="grow">Subtotal</span><strong>{formatPrice(subtotal)}</strong></div>
-      <button aria-label="Checkout" disabled={cart.length === 0} onClick={onCheckout}>Checkout</button>
+      <div className="row">
+        <button aria-label="Clear cart" disabled={cart.length === 0} onClick={onClear}>Clear cart</button>
+        <button aria-label="Checkout" disabled={cart.length === 0} onClick={onCheckout}>Checkout</button>
+      </div>
     </main>
   );
 }
